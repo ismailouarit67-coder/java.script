@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoFolio | Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar__left">
+      <div class="logo">CryptoFolio</div>
+      <span class="tag">Smart Backoffice</span>
+    </div>
+
+    <div class="topbar__right">
+      <span class="chip"></span>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <aside class="sidebar" aria-label="Menu">
+      <p class="sidebar__title">Menu</p>
+
+      <nav class="menu">
+        <a class="menu__link menu__link--active" href="#dashboard">Dashboard</a>
+        <a class="menu__link" href="#actifs">Actifs Crypto</a>
+        <a class="menu__link" href="#portefeuilles">Portefeuilles</a>
+        <a class="menu__link" href="#stats">Statistiques & API</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="panel">
+        <div class="panel__head">
+          <h2>Dashboard</h2>
+          <p></p>
+        </div>
+
+        <div class="kpis">
+          <article class="kpi">
+            <p class="kpi__label">Valeur totale</p>
+            <p class="kpi__value">0 MAD</p>
+          </article>
+
+          <article class="kpi">
+            <p class="kpi__label">Nombre d’actifs</p>
+            <p class="kpi__value">0</p>
+          </article>
+
+          <article class="kpi">
+            <p class="kpi__label">Meilleur actif</p>
+            <p class="kpi__value">-</p>
+          </article>
+        </div>
+
+        <div class="chart-card">
+          <h3>Valeur par actif</h3>
+          <canvas id="chartActifs"></canvas>
+        </div>
+      </section>
+
+      <!-- ACTIFS -->
+      <section id="actifs" class="panel">
+        <div class="panel__head">
+          <h2> Actifs Crypto</h2>
+          <p></p>
+        </div>
+
+        <div class="placeholder">
+
+          <form id="ajouter_crypto">
+            <div class="nom">
+              <label for="nom">Nom</label>
+              <input type="text" id="nom" required>
+            </div>
+
+            <div class="symbole">
+              <label for="symbole">Symbole</label>
+              <input type="text" id="symbole" name="symbol" placeholder="btc">
+            </div>
+
+            <div class="nom">
+              <label for="quantiter">Quantité</label>
+              <input type="number" step="0.0001" min="0" id="quantiter">
+            </div>
+
+            <div class="field">
+              <label for="prixAchat">Prix d’achat</label>
+              <input type="number" id="prixAchat" name="prixAchat" placeholder="35000">
+            </div>
+
+            <div class="field">
+              <label for="portefeuille">Portefeuille</label>
+              <select id="portefeuille" name="portefeuille" required>
+                <option value="" selected disabled>Choisir un portefeuille</option>
+                <option value="Long terme">Long terme</option>
+                <option value="Court terme">Court terme</option>
+                <option value="Trading">Trading</option>
+              </select>
+            </div>
+
+            <button type="submit">Ajouter</button>
+
+            <input type="text" id="re" placeholder="Recherche par nom...">
+            <div id="rechercher">
+              <button type="button" id="recherche">rechercher</button>
+            </div>
+            <div id="rechercherResult"></div>
+          </form>
+
+          <select id="triActifs">
+            <option value="none">Trier...</option>
+            <option value="nom_asc">Nom (A → Z)</option>
+            <option value="nom_desc">Nom (Z → A)</option>
+            <option value="val_desc">Valeur (↓)</option>
+            <option value="val_asc">Valeur (↑)</option>
+          </select>
+
+          <table id="cryptoTable">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Symbole</th>
+                <th>Quantité</th>
+                <th>Prix d’achat</th>
+                <th>Portefeuille</th>
+                <th>action</th>
+                <th>modifier</th>
+              </tr>
+            </thead>
+
+            <tbody id="tableaux">
+              <tr>
+                <td colspan="7">Chargement...</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div id="detailsActif"></div>
+          <div id="modifiere"></div>
+
+          <div class="chart-card">
+            <h3>Valeur par portefeuille</h3>
+            <canvas id="chartPortefeuilles"></canvas>
+          </div>
+
+          <div class="chart-card">
+            <h3>Détail par portefeuille</h3>
+            <table id="pfStatsTable">
+              <thead>
+                <tr>
+                  <th>Portefeuille</th>
+                  <th>Valeur totale</th>
+                  <th>Nb actifs</th>
+                </tr>
+              </thead>
+              <tbody id="pfStatsBody"></tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- PORTEFEUILLES -->
+      <section id="portefeuilles" class="panel">
+        <div class="panel__head">
+          <h2>Portefeuilles</h2>
+          <p></p>
+        </div>
+
+        <div class="placeholder">
+          <form id="pf-form">
+            <div class="field">
+              <label for="pf-nom">Nom du portefeuille</label>
+              <input type="text" id="pf-nom" placeholder="Ex: Investissement" required>
+            </div>
+            <button type="submit" id="pf-ajouter">Ajouter</button>
+          </form>
+
+          <table id="pfTable">
+            <thead>
+              <tr>
+                <th>Portefeuille</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pf-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section id="stats" class="panel">
+        <div class="panel__head">
+          <h2>Statistiques & API</h2>
+          <p></p>
+        </div>
+
+        <div class="chart-card">
+          <h3>Prix live (CoinGecko)</h3>
+
+          <div class="api-box">
+            <button id="btn-refresh" type="button">Actualiser prix (CoinGecko)</button>
+            <p id="api-status">API: pas encore chargée</p>
+
+            <div class="api-table-wrap">
+              <table id="apiTable">
+                <thead>
+                  <tr>
+                    <th>Actif</th>
+                    <th>Symbole</th>
+                    <th>Prix live (USD)</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody id="api-prices"></tbody>
+              </table>
+            </div>
+            
+            <p id="api-updated" class="api-updated"></p>
+            <div id="apiChartBox"></div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
